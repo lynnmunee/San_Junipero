@@ -1,30 +1,32 @@
-#GREENHOUSE MONITORING AND CONTROL SYSTEM 
-
+#!/usr/bin/python
 import RPi.GPIO as GPIO
-import time
-import os
-
+from time import sleep
+import Adafruit_DHT
+#GPIO SETUP
+fan_forward = 20
+soil_moisture = 21
 GPIO.setmode(GPIO.BCM)
-
-#Code for the soil moisture sensor
-
-#Code for the LDR
-def RCtime (RCpin)
-	reading = 0
-	GPIO.setup(RCpin, GPIO.OUT)
-	GPIO.output(RCpin, GPIO.LOW)
-	time.sleep(0.1)
-
-	GPIO.setup(RCPin, GPIO.IN)
-
-	while (GPIO.input(RCpin)==GPIO.LOW):
-		reading +=1
-
-	return reading
-
+GPIO.setup(fan_forward, GPIO.OUT)
+GPIO.setup(soil_moisture, GPIO.IN)
+#infinite loop
 while True:
-	print RCtime(21)
+	print "Hello world"
+
+	humidity, temperature = Adafruit_DHT.read_retry(11,4)
+
+	print "Temperature: " + str(temperature) + " C"
+	print "Humidity: " + str(humidity) + " %%"
+
+	soil_moisture_state = GPIO.input(soil_moisture)
+
+	if (soil_moisture_state == 1):
+		print "Soil State is 1"
+		GPIO.output(fan_forward, GPIO.HIGH)
+	else:
+		print "Soil State is 0"
+		GPIO.output(fan_forward, GPIO.LOW)
 
 
+	sleep(2)
 
 
