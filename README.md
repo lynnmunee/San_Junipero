@@ -1,2 +1,2 @@
 # San_Junipero
-Greenhouse Monitoring and Control system
+Greenhouse Monitoring and Control System
