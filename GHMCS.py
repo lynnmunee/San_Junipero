@@ -8,16 +8,19 @@ fan_forward = 20
 soil_moisture = 21
 water_pump = 16
 vent_servo = 02
+vent_angle = 90
 #GPIO SETUP
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(fan_forward, GPIO.OUT)
 GPIO.setup(water_pump, GPIO.OUT)
 GPIO.setup(soil_moisture, GPIO.IN)
+GPIO.setup(vent_servo, GPIO.OUT)
+
+
 
 
 #infinite loop
-while True:
-	print "Hello world"
+def main_func:
 
 	humidity, temperature = Adafruit_DHT.read_retry(11,4)
 
@@ -38,13 +41,39 @@ while True:
 		print "High Temperature, starting fan"
 		GPIO.output(fan_forward, GPIO.HIGH)
 
-		open_vent()
-
+		open_vent(vent_angle)
 
 	sleep(2)
 
 #function to open vent
-def open_vent():
+def open_vent(angle = vent_angle):
+	#setup pwm on servo pin
+	pwm = GPIO.PWM(vent_servo, 50)
+	
+	#start with 0 duty cycle
+	pwm.start(0)
 
-	pass
+	#Calculate duty cycle
+	duty = (angle / 18) + 2
+	GPIO.output(vent_servo, True)
+
+	pwm.ChangeDutyCycle(duty)
+	sleep(1)
+
+	GPIO.output(vent_servo, False)
+	pwm.ChangeDutyCycle(0)
+
+try:
+	while True:
+
+		start = int(raw_input("Enter Angle? (0-90)"))
+
+		open_vent(start)
+
+		sleep(2)
+
+	except KeyboardInterrupt:
+		GPIO.cleanup()
+
+
 
