@@ -72,8 +72,8 @@ try:
 
 		sleep(2)
 
-	except KeyboardInterrupt:
-		GPIO.cleanup()
+except KeyboardInterrupt:
+	GPIO.cleanup()
 
 
 
