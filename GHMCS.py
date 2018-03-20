@@ -20,7 +20,7 @@ GPIO.setup(vent_servo, GPIO.OUT)
 
 
 #infinite loop
-def main_func:
+def main_func():
 
 	humidity, temperature = Adafruit_DHT.read_retry(11,4)
 
